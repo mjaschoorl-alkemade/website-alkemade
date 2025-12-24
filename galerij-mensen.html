@@ -49,8 +49,8 @@
   <section class="page-header">
     <div class="container">
       <div class="page-header-content">
-        <nav class="breadcrumb"><a href="index.html" data-i18n="nav.home">Home</a><span>/</span><a href="galerij.html">Galerij</a><span>/</span><span>Mensen</span></nav>
-        <h1 class="page-title">Mensen</h1>
+        <nav class="breadcrumb"><a href="index.html" data-i18n="nav.home">Home</a><span>/</span><a href="galerij.html" data-i18n="nav.gallery">Galerij</a><span>/</span><span data-i18n="nav.gallery.people">Mensen</span></nav>
+        <h1 class="page-title" data-i18n="nav.gallery.people">Mensen</h1>
       </div>
     </div>
   </section>
@@ -58,14 +58,132 @@
   <section class="section">
     <div class="container">
       <div class="section-header animate-on-scroll">
-        <span class="section-label">Team</span>
-        <h2 class="section-title">Onze mensen</h2>
-        <p class="section-subtitle">Het team achter Alkemade Flowers International</p>
+        <span class="section-label" data-i18n="team.label">Team</span>
+        <h2 class="section-title" data-i18n="team.title">Onze mensen</h2>
+        <p class="section-subtitle" data-i18n="team.subtitle">Het team achter Alkemade Flowers International</p>
       </div>
-      <div class="gallery-grid">
-        <div class="gallery-item animate-on-scroll"><img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?w=600&q=80" alt="Team"><div class="gallery-overlay"><span>Ons team</span></div></div>
-        <div class="gallery-item animate-on-scroll"><img src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=600&q=80" alt="Medewerkers"><div class="gallery-overlay"><span>Medewerkers</span></div></div>
-        <div class="gallery-item animate-on-scroll"><img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=600&q=80" alt="Teamwork"><div class="gallery-overlay"><span>Samenwerking</span></div></div>
+      <div class="team-grid">
+        <!-- Mark Schoorl -->
+        <div class="team-card animate-on-scroll">
+          <div class="team-avatar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+          </div>
+          <div class="team-info">
+            <h3 class="team-name">Mark Schoorl</h3>
+            <span class="team-role" data-i18n="role.general_manager">General Manager</span>
+            <div class="team-contact">
+              <a href="mailto:mark@nl-alkemade.com" class="team-email">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+                mark@nl-alkemade.com
+              </a>
+              <a href="tel:+31651137808" class="team-phone">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+                +31 6 51137808
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bartek Liskowski -->
+        <div class="team-card animate-on-scroll">
+          <div class="team-avatar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+          </div>
+          <div class="team-info">
+            <h3 class="team-name">Bartek Liskowski</h3>
+            <span class="team-role" data-i18n="role.manager_operations">Manager Operations</span>
+            <div class="team-contact">
+              <a href="mailto:bartek@nl-alkemade.com" class="team-email">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+                bartek@nl-alkemade.com
+              </a>
+              <a href="tel:+31644048034" class="team-phone">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+                +31 6 44048034
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Claudia Alkemade -->
+        <div class="team-card animate-on-scroll">
+          <div class="team-avatar has-photo">
+            <img src="images/Foto claudia.png" alt="Claudia Alkemade">
+          </div>
+          <div class="team-info">
+            <h3 class="team-name">Claudia Alkemade</h3>
+            <span class="team-role" data-i18n="role.account_manager">Accountmanager</span>
+            <div class="team-contact">
+              <a href="mailto:claudia@nl-alkemade.com" class="team-email">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+                claudia@nl-alkemade.com
+              </a>
+              <a href="tel:+31683443031" class="team-phone">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+                +31 6 83443031
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Aleksandra Wolska -->
+        <div class="team-card animate-on-scroll">
+          <div class="team-avatar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+          </div>
+          <div class="team-info">
+            <h3 class="team-name">Aleksandra Wolska</h3>
+            <span class="team-role" data-i18n="role.junior_account_manager">Junior Accountmanager</span>
+            <div class="team-contact">
+              <a href="mailto:Aleksandra@nl-alkemade.com" class="team-email">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+                Aleksandra@nl-alkemade.com
+              </a>
+              <a href="tel:+31619888820" class="team-phone">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+                +31 6 19888820
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Mike Hofman -->
+        <div class="team-card animate-on-scroll">
+          <div class="team-avatar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+          </div>
+          <div class="team-info">
+            <h3 class="team-name">Mike Hofman</h3>
+            <span class="team-role" data-i18n="role.boxchef">Boxchef</span>
+            <div class="team-contact">
+              <a href="mailto:mike@nl-alkemade.com" class="team-email">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+                mike@nl-alkemade.com
+              </a>
+              <a href="tel:+31683524203" class="team-phone">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
+                +31 6 83524203
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Anna Anderlova -->
+        <div class="team-card animate-on-scroll">
+          <div class="team-avatar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4.4 3.6-8 8-8s8 3.6 8 8"/></svg>
+          </div>
+          <div class="team-info">
+            <h3 class="team-name">Anna Anderlova</h3>
+            <span class="team-role" data-i18n="role.administration">Administratie</span>
+            <div class="team-contact">
+              <a href="mailto:anna@nl-alkemade.com" class="team-email">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+                anna@nl-alkemade.com
+              </a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -83,7 +201,7 @@
       <div class="footer-grid">
         <div class="footer-brand">
           <img src="images/Logo alkemade website.png" alt="Alkemade International B.V." class="footer-logo-img">
-          <p>Your Partner in Floriculture Business. Gespecialiseerd in verwerking, marketing en logistiek van verse snijbloemen sinds 1997.</p>
+          <p data-i18n="footer.tagline">Your Partner in Floriculture Business. Gespecialiseerd in verwerking, marketing en logistiek van verse snijbloemen sinds 1997.</p>
         </div>
         <div class="footer-nav">
           <h4 class="footer-title" data-i18n="footer.nav">Navigatie</h4>
