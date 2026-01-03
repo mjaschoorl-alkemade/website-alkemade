@@ -216,7 +216,7 @@ p { margin-bottom: var(--space-sm); color: var(--color-gray-dark); }
 
 /* Location */
 .location-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: var(--space-xl); align-items: start; }
-.location-info { display: flex; flex-direction: column; gap: var(--space-md); }
+.location-info { display: flex; flex-direction: column; gap: var(--space-md); padding: var(--space-lg); background: var(--color-white); border-radius: var(--radius-lg); border: 1px solid var(--color-light); box-shadow: var(--shadow-sm); }
 .location-map { border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-lg); }
 .location-map iframe { display: block; }
 
