@@ -55,6 +55,35 @@
     </div>
   </section>
 
+  <section class="section section-cream">
+    <div class="container">
+      <div class="contact-form animate-on-scroll">
+          <h3 style="margin-bottom:1.5rem" data-i18n="contact.form.title">Stuur ons een bericht</h3>
+          <form id="contactForm" action="https://formspree.io/f/alkemade@nl-alkemade.com" method="POST">
+            <input type="hidden" name="_subject" value="Nieuw bericht via Alkemade website">
+            <input type="hidden" name="_next" value="https://alkemadeflowers.com/contact.html?success=true">
+            <div class="form-row">
+              <div class="form-group"><label for="name" data-i18n="contact.form.name">Naam *</label><input type="text" id="name" name="name" required></div>
+              <div class="form-group"><label for="company" data-i18n="contact.form.company">Bedrijf</label><input type="text" id="company" name="company"></div>
+            </div>
+            <div class="form-row">
+              <div class="form-group"><label for="email" data-i18n="contact.form.email">E-mailadres *</label><input type="email" id="email" name="email" required></div>
+              <div class="form-group"><label for="phone" data-i18n="contact.form.phone">Telefoonnummer</label><input type="tel" id="phone" name="phone"></div>
+            </div>
+            <div class="form-group"><label for="subject" data-i18n="contact.form.subject">Onderwerp *</label><input type="text" id="subject" name="_subject" required></div>
+            <div class="form-group"><label for="message" data-i18n="contact.form.message">Bericht *</label><textarea id="message" name="message" rows="5" required></textarea></div>
+            <button type="submit" class="btn btn-primary" data-i18n="contact.form.submit">Versturen</button>
+          </form>
+          <div id="formSuccess" style="display:none;padding:2rem;background:var(--color-cream);border-radius:var(--radius-md);text-align:center;">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" style="margin-bottom:1rem"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <h3 style="margin-bottom:0.5rem">Bericht verzonden!</h3>
+            <p style="color:var(--color-gray)">Bedankt voor uw bericht. Wij nemen zo snel mogelijk contact met u op.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
   <section class="section">
     <div class="container">
       <div class="location-grid">
@@ -96,35 +125,6 @@
             loading="lazy" 
             referrerpolicy="no-referrer-when-downgrade">
           </iframe>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="section section-cream">
-    <div class="container">
-      <div class="contact-form animate-on-scroll">
-          <h3 style="margin-bottom:1.5rem" data-i18n="contact.form.title">Stuur ons een bericht</h3>
-          <form id="contactForm" action="https://formspree.io/f/alkemade@nl-alkemade.com" method="POST">
-            <input type="hidden" name="_subject" value="Nieuw bericht via Alkemade website">
-            <input type="hidden" name="_next" value="https://alkemadeflowers.com/contact.html?success=true">
-            <div class="form-row">
-              <div class="form-group"><label for="name" data-i18n="contact.form.name">Naam *</label><input type="text" id="name" name="name" required></div>
-              <div class="form-group"><label for="company" data-i18n="contact.form.company">Bedrijf</label><input type="text" id="company" name="company"></div>
-            </div>
-            <div class="form-row">
-              <div class="form-group"><label for="email" data-i18n="contact.form.email">E-mailadres *</label><input type="email" id="email" name="email" required></div>
-              <div class="form-group"><label for="phone" data-i18n="contact.form.phone">Telefoonnummer</label><input type="tel" id="phone" name="phone"></div>
-            </div>
-            <div class="form-group"><label for="subject" data-i18n="contact.form.subject">Onderwerp *</label><input type="text" id="subject" name="_subject" required></div>
-            <div class="form-group"><label for="message" data-i18n="contact.form.message">Bericht *</label><textarea id="message" name="message" rows="5" required></textarea></div>
-            <button type="submit" class="btn btn-primary" data-i18n="contact.form.submit">Versturen</button>
-          </form>
-          <div id="formSuccess" style="display:none;padding:2rem;background:var(--color-cream);border-radius:var(--radius-md);text-align:center;">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" style="margin-bottom:1rem"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <h3 style="margin-bottom:0.5rem">Bericht verzonden!</h3>
-            <p style="color:var(--color-gray)">Bedankt voor uw bericht. Wij nemen zo snel mogelijk contact met u op.</p>
-          </div>
         </div>
       </div>
     </div>
