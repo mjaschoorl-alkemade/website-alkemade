@@ -59,9 +59,11 @@
     <div class="container">
       <div class="contact-form animate-on-scroll">
           <h3 style="margin-bottom:1.5rem" data-i18n="contact.form.title">Stuur ons een bericht</h3>
-          <form id="contactForm" action="https://formspree.io/f/alkemade@nl-alkemade.com" method="POST">
+          <form id="contactForm" action="https://formsubmit.co/alkemade@nl-alkemade.com" method="POST">
             <input type="hidden" name="_subject" value="Nieuw bericht via Alkemade website">
-            <input type="hidden" name="_next" value="https://alkemadeflowers.com/contact.html?success=true">
+            <input type="hidden" name="_captcha" value="false">
+            <input type="hidden" name="_template" value="box">
+            <input type="hidden" name="_next" value="">
             <div class="form-row">
               <div class="form-group"><label for="name" data-i18n="contact.form.name">Naam *</label><input type="text" id="name" name="name" required></div>
               <div class="form-group"><label for="company" data-i18n="contact.form.company">Bedrijf</label><input type="text" id="company" name="company"></div>
@@ -70,14 +72,15 @@
               <div class="form-group"><label for="email" data-i18n="contact.form.email">E-mailadres *</label><input type="email" id="email" name="email" required></div>
               <div class="form-group"><label for="phone" data-i18n="contact.form.phone">Telefoonnummer</label><input type="tel" id="phone" name="phone"></div>
             </div>
-            <div class="form-group"><label for="subject" data-i18n="contact.form.subject">Onderwerp *</label><input type="text" id="subject" name="_subject" required></div>
+            <div class="form-group"><label for="subject" data-i18n="contact.form.subject">Onderwerp *</label><input type="text" id="subject" name="subject" required></div>
             <div class="form-group"><label for="message" data-i18n="contact.form.message">Bericht *</label><textarea id="message" name="message" rows="5" required></textarea></div>
-            <button type="submit" class="btn btn-primary" data-i18n="contact.form.submit">Versturen</button>
+            <button type="submit" class="btn btn-primary" id="submitBtn" data-i18n="contact.form.submit">Versturen</button>
           </form>
           <div id="formSuccess" style="display:none;padding:2rem;background:var(--color-cream);border-radius:var(--radius-md);text-align:center;">
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" style="margin-bottom:1rem"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
-            <h3 style="margin-bottom:0.5rem">Bericht verzonden!</h3>
-            <p style="color:var(--color-gray)">Bedankt voor uw bericht. Wij nemen zo snel mogelijk contact met u op.</p>
+            <h3 style="margin-bottom:0.5rem">Bedankt voor uw bericht!</h3>
+            <p style="color:var(--color-gray);margin-bottom:0.5rem">U ontvangt een bevestigingsmail op het ingevulde e-mailadres.</p>
+            <p style="color:var(--color-gray)">Wij nemen zo snel mogelijk contact met u op.</p>
           </div>
         </div>
       </div>
@@ -192,44 +195,55 @@
     document.addEventListener('DOMContentLoaded', function() {
       const form = document.getElementById('contactForm');
       const successMsg = document.getElementById('formSuccess');
+      const submitBtn = document.getElementById('submitBtn');
       
-      // Check if redirected after success
-      if (window.location.search.includes('success=true')) {
-        form.style.display = 'none';
-        successMsg.style.display = 'block';
+      // Set the redirect URL to current page
+      const nextInput = form.querySelector('input[name="_next"]');
+      if (nextInput) {
+        nextInput.value = window.location.href;
       }
       
       form.addEventListener('submit', function(e) {
         e.preventDefault();
         
+        // Disable submit button and show loading state
+        submitBtn.disabled = true;
+        const originalText = submitBtn.textContent;
+        submitBtn.textContent = 'Verzenden...';
+        
+        // Get form data
         const formData = new FormData(form);
-        const name = formData.get('name');
-        const company = formData.get('company');
         const email = formData.get('email');
-        const phone = formData.get('phone');
-        const subject = formData.get('_subject') || 'Contact via website';
-        const message = formData.get('message');
         
-        // Build email body
-        const body = `Naam: ${name}
-Bedrijf: ${company || 'Niet opgegeven'}
-E-mail: ${email}
-Telefoon: ${phone || 'Niet opgegeven'}
-
-Bericht:
-${message}`;
-        
-        // Open email client with pre-filled data
-        const mailtoLink = `mailto:alkemade@nl-alkemade.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-        
-        // Try to open email client
-        window.location.href = mailtoLink;
-        
-        // Show success message
-        setTimeout(() => {
-          form.style.display = 'none';
-          successMsg.style.display = 'block';
-        }, 500);
+        // Submit form using fetch
+        fetch(form.action, {
+          method: 'POST',
+          body: formData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        })
+        .then(response => {
+          if (response.ok) {
+            // Show success message
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+            
+            // Update success message with user's email
+            const emailText = successMsg.querySelector('p:first-of-type');
+            if (emailText && email) {
+              emailText.innerHTML = `U ontvangt een bevestigingsmail op <strong>${email}</strong>.`;
+            }
+          } else {
+            throw new Error('Form submission failed');
+          }
+        })
+        .catch(error => {
+          // Show error message
+          alert('Er is een fout opgetreden bij het verzenden. Probeer het later opnieuw of neem direct contact met ons op via alkemade@nl-alkemade.com');
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        });
       });
     });
   </script>
