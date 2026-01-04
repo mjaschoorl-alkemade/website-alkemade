@@ -185,25 +185,9 @@
       </div>
     </div>
   </footer>
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
   <script src="js/main.js"></script>
   <script src="js/search.js"></script>
   <script>
-    // EmailJS Configuration
-    // VERVANG DEZE WAARDEN MET JE EIGEN EMAILJS CREDENTIALS
-    // Zie EMAILJS_SETUP.md voor instructies
-    const EMAILJS_CONFIG = {
-      SERVICE_ID: 'YOUR_SERVICE_ID', // Vervang met je Service ID
-      TEMPLATE_ID_ALKEMADE: 'YOUR_TEMPLATE_ID_ALKEMADE', // Vervang met je Alkemade Template ID
-      TEMPLATE_ID_CONFIRMATION: 'YOUR_TEMPLATE_ID_CONFIRMATION', // Vervang met je Confirmation Template ID
-      PUBLIC_KEY: 'YOUR_PUBLIC_KEY' // Vervang met je Public Key
-    };
-    
-    // Initialize EmailJS if configured
-    if (EMAILJS_CONFIG.PUBLIC_KEY !== 'YOUR_PUBLIC_KEY') {
-      emailjs.init(EMAILJS_CONFIG.PUBLIC_KEY);
-    }
-    
     // Contact Form Handler
     document.addEventListener('DOMContentLoaded', function() {
       const form = document.getElementById('contactForm');
@@ -212,13 +196,6 @@
       
       form.addEventListener('submit', function(e) {
         e.preventDefault();
-        
-        // Check if EmailJS is configured
-        const useEmailJS = EMAILJS_CONFIG.PUBLIC_KEY !== 'YOUR_PUBLIC_KEY';
-        
-        if (!useEmailJS) {
-          alert('EmailJS is nog niet geconfigureerd. Zie EMAILJS_SETUP.md voor instructies. Het formulier werkt nu met FormSubmit (bevestigingsmail werkt mogelijk niet vanuit alkemade@nl-alkemade.com).');
-        }
         
         // Disable submit button and show loading state
         submitBtn.disabled = true;
@@ -233,50 +210,8 @@
         const subject = form.querySelector('#subject').value;
         const message = form.querySelector('#message').value;
         
-        if (useEmailJS) {
-          // Use EmailJS for reliable email delivery
-          const alkemadeParams = {
-            to_email: 'alkemade@nl-alkemade.com',
-            from_name: name,
-            from_email: email,
-            company: company || 'Niet opgegeven',
-            phone: phone || 'Niet opgegeven',
-            subject: subject,
-            message: message,
-            reply_to: email
-          };
-          
-          const confirmationParams = {
-            to_email: email,
-            to_name: name,
-            subject: subject
-          };
-          
-          // Send email to Alkemade
-          emailjs.send(EMAILJS_CONFIG.SERVICE_ID, EMAILJS_CONFIG.TEMPLATE_ID_ALKEMADE, alkemadeParams)
-            .then(() => {
-              // Send confirmation email to user
-              return emailjs.send(EMAILJS_CONFIG.SERVICE_ID, EMAILJS_CONFIG.TEMPLATE_ID_CONFIRMATION, confirmationParams);
-            })
-            .then(() => {
-              // Show success message
-              form.style.display = 'none';
-              successMsg.style.display = 'block';
-              
-              const emailText = successMsg.querySelector('p:first-of-type');
-              if (emailText && email) {
-                emailText.innerHTML = `U ontvangt een bevestigingsmail op <strong>${email}</strong> vanuit alkemade@nl-alkemade.com.`;
-              }
-            })
-            .catch(error => {
-              console.error('EmailJS Error:', error);
-              alert('Er is een fout opgetreden bij het verzenden. Probeer het later opnieuw of neem direct contact met ons op via alkemade@nl-alkemade.com');
-              submitBtn.disabled = false;
-              submitBtn.textContent = originalText;
-            });
-        } else {
-          // Fallback to FormSubmit (bevestigingsmail werkt mogelijk niet vanuit alkemade@nl-alkemade.com)
-          const alkemadeEmailBody = `Nieuw bericht via Alkemade website
+        // Prepare email content for Alkemade
+        const alkemadeEmailBody = `Nieuw bericht via Alkemade website
 
 Naam: ${name}
 Bedrijf: ${company || 'Niet opgegeven'}
@@ -286,8 +221,9 @@ Onderwerp: ${subject}
 
 Bericht:
 ${message}`;
-          
-          const confirmationEmailBody = `Beste ${name || 'klant'},
+        
+        // Prepare confirmation email for user
+        const confirmationEmailBody = `Beste ${name || 'klant'},
 
 Bedankt voor uw bericht via de Alkemade Flowers website.
 
@@ -297,50 +233,54 @@ Met vriendelijke groet,
 Alkemade International B.V.
 alkemade@nl-alkemade.com
 +31-297-567148`;
-          
-          const mainFormData = new FormData();
-          mainFormData.append('_to', 'alkemade@nl-alkemade.com');
-          mainFormData.append('_subject', 'Nieuw bericht via Alkemade website: ' + subject);
-          mainFormData.append('_from', email);
-          mainFormData.append('_replyto', email);
-          mainFormData.append('message', alkemadeEmailBody);
-          
-          const confirmationFormData = new FormData();
-          confirmationFormData.append('_to', email);
-          confirmationFormData.append('_subject', 'Bevestiging: Uw bericht is ontvangen - Alkemade Flowers');
-          confirmationFormData.append('_from', 'alkemade@nl-alkemade.com');
-          confirmationFormData.append('_replyto', 'alkemade@nl-alkemade.com');
-          confirmationFormData.append('message', confirmationEmailBody);
-          
-          Promise.all([
-            fetch('https://formsubmit.co/ajax/alkemade@nl-alkemade.com', {
-              method: 'POST',
-              body: mainFormData,
-              headers: { 'Accept': 'application/json' }
-            }),
-            fetch('https://formsubmit.co/ajax/' + encodeURIComponent(email), {
-              method: 'POST',
-              body: confirmationFormData,
-              headers: { 'Accept': 'application/json' }
-            })
-          ])
-          .then(responses => Promise.all(responses.map(r => r.json())))
-          .then(results => {
-            form.style.display = 'none';
-            successMsg.style.display = 'block';
-            
-            const emailText = successMsg.querySelector('p:first-of-type');
-            if (emailText && email) {
-              emailText.innerHTML = `U ontvangt een bevestigingsmail op <strong>${email}</strong> vanuit alkemade@nl-alkemade.com.`;
-            }
+        
+        // Send email to Alkemade
+        const mainFormData = new FormData();
+        mainFormData.append('_to', 'alkemade@nl-alkemade.com');
+        mainFormData.append('_subject', 'Nieuw bericht via Alkemade website: ' + subject);
+        mainFormData.append('_from', email);
+        mainFormData.append('_replyto', email);
+        mainFormData.append('message', alkemadeEmailBody);
+        
+        // Send confirmation email to user
+        const confirmationFormData = new FormData();
+        confirmationFormData.append('_to', email);
+        confirmationFormData.append('_subject', 'Bevestiging: Uw bericht is ontvangen - Alkemade Flowers');
+        confirmationFormData.append('_from', 'alkemade@nl-alkemade.com');
+        confirmationFormData.append('_replyto', 'alkemade@nl-alkemade.com');
+        confirmationFormData.append('message', confirmationEmailBody);
+        
+        // Send both emails
+        Promise.all([
+          fetch('https://formsubmit.co/ajax/alkemade@nl-alkemade.com', {
+            method: 'POST',
+            body: mainFormData,
+            headers: { 'Accept': 'application/json' }
+          }),
+          fetch('https://formsubmit.co/ajax/' + encodeURIComponent(email), {
+            method: 'POST',
+            body: confirmationFormData,
+            headers: { 'Accept': 'application/json' }
           })
-          .catch(error => {
-            console.error('Error:', error);
-            alert('Er is een fout opgetreden bij het verzenden. Probeer het later opnieuw of neem direct contact met ons op via alkemade@nl-alkemade.com');
-            submitBtn.disabled = false;
-            submitBtn.textContent = originalText;
-          });
-        }
+        ])
+        .then(responses => Promise.all(responses.map(r => r.json())))
+        .then(results => {
+          // Show success message
+          form.style.display = 'none';
+          successMsg.style.display = 'block';
+          
+          // Update success message with user's email
+          const emailText = successMsg.querySelector('p:first-of-type');
+          if (emailText && email) {
+            emailText.innerHTML = `U ontvangt een bevestigingsmail op <strong>${email}</strong> vanuit alkemade@nl-alkemade.com.`;
+          }
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Er is een fout opgetreden bij het verzenden. Probeer het later opnieuw of neem direct contact met ons op via alkemade@nl-alkemade.com');
+          submitBtn.disabled = false;
+          submitBtn.textContent = originalText;
+        });
       });
     });
   </script>
