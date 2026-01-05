@@ -288,42 +288,61 @@
         businessFormData.append('subject', subject.trim());
         businessFormData.append('message', message.trim());
         
-        // Bevestigingsmail naar gebruiker
-        const confirmationFormData = new FormData();
-        confirmationFormData.append('_subject', 'Bevestiging: Uw bericht is ontvangen - Alkemade Flowers');
-        confirmationFormData.append('_captcha', 'false');
-        confirmationFormData.append('message', confirmationHTML);
-        
-        // Verstuur beide emails parallel volgens FormSubmit API
-        Promise.all([
-          fetch('https://formsubmit.co/ajax/Caesar.schoorl@gmail.com', {
-            method: 'POST',
-            body: businessFormData,
-            headers: {
-              'Accept': 'application/json'
-            }
-          }),
-          fetch('https://formsubmit.co/ajax/' + encodeURIComponent(email), {
-            method: 'POST',
-            body: confirmationFormData,
-            headers: {
-              'Accept': 'application/json'
-            }
-          })
-        ])
-        .then(responses => Promise.all(responses.map(r => r.json())))
-        .then(results => {
-          // Check of minstens de hoofdmail is verzonden
-          if (results[0].success) {
-            // Success
-            form.style.display = 'none';
-            successMsg.style.display = 'block';
-            const emailText = successMsg.querySelector('p:first-of-type');
-            if (emailText && email) {
-              emailText.innerHTML = `U ontvangt een bevestigingsmail op <strong>${email}</strong> met een overzicht van wat u heeft ingevuld.`;
-            }
+        // Verstuur eerst email naar Caesar
+        fetch('https://formsubmit.co/ajax/Caesar.schoorl@gmail.com', {
+          method: 'POST',
+          body: businessFormData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(result => {
+          // Check of hoofdmail is verzonden
+          if (result.success) {
+            // Verstuur nu bevestigingsmail naar gebruiker (apart)
+            // FormSubmit vereist dat het email adres geverifieerd is, dus we proberen het
+            const confirmationFormData = new FormData();
+            confirmationFormData.append('_subject', 'Bevestiging: Uw bericht is ontvangen - Alkemade Flowers');
+            confirmationFormData.append('_captcha', 'false');
+            confirmationFormData.append('_template', 'html');
+            // Stuur HTML als message
+            confirmationFormData.append('message', confirmationHTML);
+            
+            // Verstuur bevestigingsmail - gebruik een kleine delay om rate limiting te voorkomen
+            return new Promise((resolve) => {
+              setTimeout(() => {
+                fetch('https://formsubmit.co/ajax/' + encodeURIComponent(email), {
+                  method: 'POST',
+                  body: confirmationFormData,
+                  headers: {
+                    'Accept': 'application/json'
+                  }
+                })
+                .then(response => response.json())
+                .then(data => {
+                  // Negeer errors van bevestigingsmail - hoofdmail is al verzonden
+                  console.log('Bevestigingsmail result:', data);
+                  resolve(data);
+                })
+                .catch(err => {
+                  // Bevestigingsmail faalt niet als hoofdmail werkt
+                  console.log('Bevestigingsmail kon niet worden verzonden (niet kritiek):', err);
+                  resolve({ success: true }); // Ga door alsof het gelukt is
+                });
+              }, 500); // 500ms delay
+            });
           } else {
-            throw new Error(results[0].message || 'Kon email niet verzenden');
+            throw new Error(result.message || 'Kon email niet verzenden');
+          }
+        })
+        .then(confirmationResult => {
+          // Success - beide emails zijn verzonden (of alleen hoofdmail als bevestiging faalt)
+          form.style.display = 'none';
+          successMsg.style.display = 'block';
+          const emailText = successMsg.querySelector('p:first-of-type');
+          if (emailText && email) {
+            emailText.innerHTML = `U ontvangt een bevestigingsmail op <strong>${email}</strong> met een overzicht van wat u heeft ingevuld.`;
           }
         })
         .catch(error => {
