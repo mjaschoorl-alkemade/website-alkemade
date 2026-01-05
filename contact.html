@@ -276,7 +276,7 @@
 </body>
 </html>`;
         
-        // Email naar bedrijf volgens FormSubmit documentatie
+        // Email naar Caesar volgens FormSubmit documentatie
         const businessFormData = new FormData();
         businessFormData.append('_subject', `Nieuw bericht via Alkemade website: ${subject}`);
         businessFormData.append('_replyto', email);
@@ -296,7 +296,7 @@
         
         // Verstuur beide emails parallel volgens FormSubmit API
         Promise.all([
-          fetch('https://formsubmit.co/ajax/alkemade@nl-alkemade.com', {
+          fetch('https://formsubmit.co/ajax/Caesar.schoorl@gmail.com', {
             method: 'POST',
             body: businessFormData,
             headers: {
