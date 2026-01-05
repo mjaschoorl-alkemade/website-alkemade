@@ -210,35 +210,60 @@
         const subject = form.querySelector('#subject').value;
         const message = form.querySelector('#message').value;
         
-        // API endpoint - pas aan naar je server URL
+        // API endpoint
         const API_URL = window.location.origin + '/api/contact';
         
-        // Send form data to own server
+        // Timeout voor fetch (30 seconden)
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 30000);
+        
+        // Send form data to server
         fetch(API_URL, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
+          signal: controller.signal,
           body: JSON.stringify({
-            name: name,
-            email: email,
-            company: company || '',
-            phone: phone || '',
-            subject: subject,
-            message: message
+            name: name.trim(),
+            email: email.trim(),
+            company: (company || '').trim(),
+            phone: (phone || '').trim(),
+            subject: subject.trim(),
+            message: message.trim()
           })
         })
         .then(async response => {
-          // Check if response is JSON
+          clearTimeout(timeoutId);
+          
+          // Check if response is OK
+          if (!response.ok) {
+            let errorMessage = 'Server error';
+            try {
+              const contentType = response.headers.get('content-type');
+              if (contentType && contentType.includes('application/json')) {
+                const errorData = await response.json();
+                errorMessage = errorData.error || errorMessage;
+              } else {
+                const text = await response.text();
+                errorMessage = text.substring(0, 200) || errorMessage;
+              }
+            } catch (e) {
+              errorMessage = `HTTP ${response.status}: ${response.statusText}`;
+            }
+            throw new Error(errorMessage);
+          }
+          
+          // Parse JSON response
           const contentType = response.headers.get('content-type');
           if (!contentType || !contentType.includes('application/json')) {
-            const text = await response.text();
-            throw new Error(`Server gaf geen JSON terug. Status: ${response.status}. Response: ${text.substring(0, 100)}`);
+            throw new Error('Server gaf geen JSON terug');
           }
+          
           return response.json();
         })
         .then(data => {
-          if (data.success) {
+          if (data && data.success) {
             // Show success message
             form.style.display = 'none';
             successMsg.style.display = 'block';
@@ -249,12 +274,26 @@
               emailText.innerHTML = `U ontvangt een bevestigingsmail op <strong>${email}</strong> vanuit alkemade@nl-alkemade.com.`;
             }
           } else {
-            throw new Error(data.error || 'Onbekende fout');
+            throw new Error(data?.error || 'Onbekende fout opgetreden');
           }
         })
         .catch(error => {
-          console.error('Error:', error);
-          alert('Er is een fout opgetreden bij het verzenden: ' + error.message + '\n\nProbeer het later opnieuw of neem direct contact met ons op via alkemade@nl-alkemade.com');
+          clearTimeout(timeoutId);
+          console.error('Form error:', error);
+          
+          // User-vriendelijke error messages
+          let errorMessage = 'Er is een fout opgetreden bij het verzenden.';
+          
+          if (error.name === 'AbortError') {
+            errorMessage = 'Het verzenden duurt te lang. Controleer je internetverbinding en probeer het opnieuw.';
+          } else if (error.message) {
+            errorMessage = error.message;
+          }
+          
+          // Toon error aan gebruiker
+          alert(errorMessage + '\n\nProbeer het later opnieuw of neem direct contact met ons op via alkemade@nl-alkemade.com');
+          
+          // Reset button
           submitBtn.disabled = false;
           submitBtn.textContent = originalText;
         });
