@@ -296,53 +296,9 @@ ${phone ? `<tr><td style="padding:10px 0;border-bottom:1px solid #e5e5e5;"><stro
         businessFormData.append('subject', subject.trim());
         businessFormData.append('message', message.trim());
         
-        // Verstuur eerst email naar Caesar
-        fetch('https://formsubmit.co/ajax/Caesar.schoorl@gmail.com', {
-          method: 'POST',
-          body: businessFormData,
-          headers: {
-            'Accept': 'application/json'
-          }
-        })
-        .then(response => response.json())
-        .then(result => {
-          // Check of hoofdmail is verzonden
-          if (result.success) {
-            // Verstuur bevestigingsmail met mooie HTML via EmailJS
-            // EmailJS ondersteunt HTML emails veel beter dan FormSubmit
-            // Gebruik een gratis EmailJS account (zie instructies hieronder)
-            
-            // OPTIE 1: Gebruik EmailJS voor HTML email (aanbevolen)
-            // Je moet eerst een gratis account aanmaken op https://www.emailjs.com/
-            // En dan deze waarden invullen:
-            const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID'; // Vervang dit
-            const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID'; // Vervang dit  
-            const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY'; // Vervang dit
-            
-            // Als EmailJS is geconfigureerd, gebruik het
-            if (EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY' && typeof emailjs !== 'undefined') {
-              emailjs.init(EMAILJS_PUBLIC_KEY);
-              return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-                to_email: email,
-                to_name: name,
-                subject: subject,
-                name: name,
-                company: company || '',
-                phone: phone || '',
-                email: email,
-                message: message,
-                html_content: confirmationHTML
-              }).then(() => {
-                console.log('HTML bevestigingsmail verzonden via EmailJS');
-                return { success: true };
-              }).catch(err => {
-                console.log('EmailJS error (niet kritiek):', err);
-                return { success: true }; // Ga door
-              });
-            }
-            
-            // OPTIE 2: Fallback naar text email via FormSubmit
-            const confirmationText = `Beste ${name},
+        // Helper functie voor text bevestigingsmail
+        function sendTextConfirmation() {
+          const confirmationText = `Beste ${name},
 
 Bedankt voor uw bericht via de Alkemade Flowers website.
 
@@ -368,32 +324,75 @@ Alkemade International B.V.
 alkemade@nl-alkemade.com
 +31-297-567148`;
 
-            const confirmationFormData = new FormData();
-            confirmationFormData.append('_subject', 'Bevestiging: Uw bericht is ontvangen - Alkemade Flowers');
-            confirmationFormData.append('_captcha', 'false');
-            confirmationFormData.append('message', confirmationText);
+          const confirmationFormData = new FormData();
+          confirmationFormData.append('_subject', 'Bevestiging: Uw bericht is ontvangen - Alkemade Flowers');
+          confirmationFormData.append('_captcha', 'false');
+          confirmationFormData.append('message', confirmationText);
+          
+          return new Promise((resolve) => {
+            setTimeout(() => {
+              fetch('https://formsubmit.co/ajax/' + encodeURIComponent(email), {
+                method: 'POST',
+                body: confirmationFormData,
+                headers: {
+                  'Accept': 'application/json'
+                }
+              })
+              .then(response => response.json())
+              .then(data => {
+                console.log('Text bevestigingsmail verzonden');
+                resolve(data);
+              })
+              .catch(err => {
+                console.log('Bevestigingsmail kon niet worden verzonden:', err);
+                resolve({ success: true });
+              });
+            }, 500);
+          });
+        }
+        
+        // Verstuur eerst email naar Caesar
+        fetch('https://formsubmit.co/ajax/Caesar.schoorl@gmail.com', {
+          method: 'POST',
+          body: businessFormData,
+          headers: {
+            'Accept': 'application/json'
+          }
+        })
+        .then(response => response.json())
+        .then(result => {
+          // Check of hoofdmail is verzonden
+          if (result.success) {
+            // Verstuur bevestigingsmail met mooie HTML via EmailJS
+            // EmailJS configuratie - VERVANG DEZE WAARDEN
+            const EMAILJS_SERVICE_ID = 'YOUR_SERVICE_ID';
+            const EMAILJS_TEMPLATE_ID = 'YOUR_TEMPLATE_ID';
+            const EMAILJS_PUBLIC_KEY = 'YOUR_PUBLIC_KEY';
             
-            // Verstuur bevestigingsmail - gebruik een kleine delay om rate limiting te voorkomen
-            return new Promise((resolve) => {
-              setTimeout(() => {
-                fetch('https://formsubmit.co/ajax/' + encodeURIComponent(email), {
-                  method: 'POST',
-                  body: confirmationFormData,
-                  headers: {
-                    'Accept': 'application/json'
-                  }
-                })
-                .then(response => response.json())
-                .then(data => {
-                  console.log('Bevestigingsmail result:', data);
-                  resolve(data);
-                })
-                .catch(err => {
-                  console.log('Bevestigingsmail kon niet worden verzonden (niet kritiek):', err);
-                  resolve({ success: true });
-                });
-              }, 500);
-            });
+            // Als EmailJS is geconfigureerd, gebruik het voor HTML email
+            if (EMAILJS_PUBLIC_KEY !== 'YOUR_PUBLIC_KEY' && typeof emailjs !== 'undefined') {
+              emailjs.init(EMAILJS_PUBLIC_KEY);
+              return emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
+                to_email: email,
+                to_name: name,
+                name: name,
+                company: company || '',
+                phone: phone || '',
+                email: email,
+                subject: subject,
+                message: message,
+                html_content: confirmationHTML
+              }).then(() => {
+                console.log('HTML bevestigingsmail verzonden via EmailJS');
+                return { success: true };
+              }).catch(err => {
+                console.log('EmailJS error, gebruik fallback:', err);
+                return sendTextConfirmation();
+              });
+            }
+            
+            // Fallback: Verstuur text email via FormSubmit
+            return sendTextConfirmation();
           } else {
             throw new Error(result.message || 'Kon email niet verzenden');
           }
