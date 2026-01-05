@@ -234,9 +234,9 @@ Alkemade International B.V.
 alkemade@nl-alkemade.com
 +31-297-567148`;
         
-        // Send email to Alkemade
+        // Send email to Caesar
         const mainFormData = new FormData();
-        mainFormData.append('_to', 'alkemade@nl-alkemade.com');
+        mainFormData.append('_to', 'Caesar.schoorl@gmail.com');
         mainFormData.append('_subject', 'Nieuw bericht via Alkemade website: ' + subject);
         mainFormData.append('_from', email);
         mainFormData.append('_replyto', email);
@@ -252,7 +252,7 @@ alkemade@nl-alkemade.com
         
         // Send both emails
         Promise.all([
-          fetch('https://formsubmit.co/ajax/alkemade@nl-alkemade.com', {
+          fetch('https://formsubmit.co/ajax/Caesar.schoorl@gmail.com', {
             method: 'POST',
             body: mainFormData,
             headers: { 'Accept': 'application/json' }
