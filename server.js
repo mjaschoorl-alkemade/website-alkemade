@@ -11,7 +11,6 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(__dirname));
 
 // Email configuration
 // Configureer deze in .env bestand of pas hier aan
@@ -35,6 +34,12 @@ transporter.verify(function(error, success) {
   }
 });
 
+// Email validatie functie
+function isValidEmail(email) {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+}
+
 // Contact form endpoint
 app.post('/api/contact', async (req, res) => {
   try {
@@ -45,6 +50,14 @@ app.post('/api/contact', async (req, res) => {
       return res.status(400).json({ 
         success: false, 
         error: 'Vul alle verplichte velden in' 
+      });
+    }
+
+    // Email format validatie
+    if (!isValidEmail(email)) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Ongeldig emailadres formaat' 
       });
     }
 
@@ -126,16 +139,38 @@ alkemade@nl-alkemade.com
       `
     };
 
-    // Verstuur beide emails
-    const [result1, result2] = await Promise.all([
-      transporter.sendMail(mailToCaesar),
-      transporter.sendMail(confirmationMail)
-    ]);
+    // Verstuur email naar Caesar (verplicht)
+    const result1 = await transporter.sendMail(mailToCaesar);
+    
+    // Verstuur bevestigingsmail naar gebruiker (optioneel - faalt niet als dit mislukt)
+    let confirmationSent = false;
+    let confirmationError = null;
+    
+    try {
+      // Alleen versturen als email adres geldig lijkt (heeft een geldig TLD)
+      const emailDomain = email.split('@')[1];
+      const validTLDs = ['com', 'net', 'org', 'nl', 'be', 'de', 'fr', 'uk', 'co', 'io', 'eu', 'info', 'biz'];
+      const hasValidTLD = validTLDs.some(tld => emailDomain && emailDomain.toLowerCase().endsWith('.' + tld));
+      
+      if (hasValidTLD) {
+        await transporter.sendMail(confirmationMail);
+        confirmationSent = true;
+      } else {
+        console.log(`Bevestigingsmail overgeslagen voor ${email} - ongeldig domein`);
+      }
+    } catch (confError) {
+      // Log de error maar laat het niet crashen
+      console.error('Bevestigingsmail kon niet worden verzonden:', confError.message);
+      confirmationError = confError.message;
+      // De hoofdmail is al verzonden, dus we gaan door
+    }
 
     res.json({ 
       success: true, 
       message: 'Email succesvol verzonden',
-      messageId: result1.messageId
+      messageId: result1.messageId,
+      confirmationSent: confirmationSent,
+      ...(confirmationError && { confirmationWarning: 'Bevestigingsmail kon niet worden verzonden' })
     });
 
   } catch (error) {
@@ -148,8 +183,24 @@ alkemade@nl-alkemade.com
   }
 });
 
+// Serve static files (alleen voor niet-API routes)
+app.use((req, res, next) => {
+  // Skip static files voor API routes
+  if (req.path.startsWith('/api/')) {
+    return next();
+  }
+  next();
+});
+
 // Serve static files
+app.use(express.static(__dirname));
+
+// Fallback: serve index.html voor alle andere GET routes
 app.get('*', (req, res) => {
+  // Skip API routes
+  if (req.path.startsWith('/api/')) {
+    return res.status(404).json({ success: false, error: 'API endpoint niet gevonden' });
+  }
   res.sendFile(path.join(__dirname, req.path === '/' ? 'index.html' : req.path));
 });
 

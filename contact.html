@@ -228,7 +228,15 @@
             message: message
           })
         })
-        .then(response => response.json())
+        .then(async response => {
+          // Check if response is JSON
+          const contentType = response.headers.get('content-type');
+          if (!contentType || !contentType.includes('application/json')) {
+            const text = await response.text();
+            throw new Error(`Server gaf geen JSON terug. Status: ${response.status}. Response: ${text.substring(0, 100)}`);
+          }
+          return response.json();
+        })
         .then(data => {
           if (data.success) {
             // Show success message
