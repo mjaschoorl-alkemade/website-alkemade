@@ -210,74 +210,43 @@
         const subject = form.querySelector('#subject').value;
         const message = form.querySelector('#message').value;
         
-        // Prepare email content for Alkemade
-        const alkemadeEmailBody = `Nieuw bericht via Alkemade website
-
-Naam: ${name}
-Bedrijf: ${company || 'Niet opgegeven'}
-E-mail: ${email}
-Telefoon: ${phone || 'Niet opgegeven'}
-Onderwerp: ${subject}
-
-Bericht:
-${message}`;
+        // API endpoint - pas aan naar je server URL
+        const API_URL = window.location.origin + '/api/contact';
         
-        // Prepare confirmation email for user
-        const confirmationEmailBody = `Beste ${name || 'klant'},
-
-Bedankt voor uw bericht via de Alkemade Flowers website.
-
-Wij hebben uw bericht met onderwerp "${subject}" ontvangen en nemen zo snel mogelijk contact met u op.
-
-Met vriendelijke groet,
-Alkemade International B.V.
-alkemade@nl-alkemade.com
-+31-297-567148`;
-        
-        // Send email to Caesar
-        const mainFormData = new FormData();
-        mainFormData.append('_to', 'Caesar.schoorl@gmail.com');
-        mainFormData.append('_subject', 'Nieuw bericht via Alkemade website: ' + subject);
-        mainFormData.append('_from', email);
-        mainFormData.append('_replyto', email);
-        mainFormData.append('message', alkemadeEmailBody);
-        
-        // Send confirmation email to user
-        const confirmationFormData = new FormData();
-        confirmationFormData.append('_to', email);
-        confirmationFormData.append('_subject', 'Bevestiging: Uw bericht is ontvangen - Alkemade Flowers');
-        confirmationFormData.append('_from', 'alkemade@nl-alkemade.com');
-        confirmationFormData.append('_replyto', 'alkemade@nl-alkemade.com');
-        confirmationFormData.append('message', confirmationEmailBody);
-        
-        // Send both emails
-        Promise.all([
-          fetch('https://formsubmit.co/ajax/Caesar.schoorl@gmail.com', {
-            method: 'POST',
-            body: mainFormData,
-            headers: { 'Accept': 'application/json' }
-          }),
-          fetch('https://formsubmit.co/ajax/' + encodeURIComponent(email), {
-            method: 'POST',
-            body: confirmationFormData,
-            headers: { 'Accept': 'application/json' }
+        // Send form data to own server
+        fetch(API_URL, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: name,
+            email: email,
+            company: company || '',
+            phone: phone || '',
+            subject: subject,
+            message: message
           })
-        ])
-        .then(responses => Promise.all(responses.map(r => r.json())))
-        .then(results => {
-          // Show success message
-          form.style.display = 'none';
-          successMsg.style.display = 'block';
-          
-          // Update success message with user's email
-          const emailText = successMsg.querySelector('p:first-of-type');
-          if (emailText && email) {
-            emailText.innerHTML = `U ontvangt een bevestigingsmail op <strong>${email}</strong> vanuit alkemade@nl-alkemade.com.`;
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.success) {
+            // Show success message
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
+            
+            // Update success message with user's email
+            const emailText = successMsg.querySelector('p:first-of-type');
+            if (emailText && email) {
+              emailText.innerHTML = `U ontvangt een bevestigingsmail op <strong>${email}</strong> vanuit alkemade@nl-alkemade.com.`;
+            }
+          } else {
+            throw new Error(data.error || 'Onbekende fout');
           }
         })
         .catch(error => {
           console.error('Error:', error);
-          alert('Er is een fout opgetreden bij het verzenden. Probeer het later opnieuw of neem direct contact met ons op via alkemade@nl-alkemade.com');
+          alert('Er is een fout opgetreden bij het verzenden: ' + error.message + '\n\nProbeer het later opnieuw of neem direct contact met ons op via alkemade@nl-alkemade.com');
           submitBtn.disabled = false;
           submitBtn.textContent = originalText;
         });
