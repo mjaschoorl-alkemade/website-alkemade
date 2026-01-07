@@ -36,3 +36,5 @@ De code is klaar voor HTML emails, je hoeft alleen een API key toe te voegen van
 
 **Met API key:** De bevestigingsmail wordt als mooie HTML email verstuurd met Alkemade design.
 
+
+

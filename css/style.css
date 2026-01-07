@@ -161,6 +161,19 @@ p { margin-bottom: var(--space-sm); color: var(--color-gray-dark); }
 .service-card h4 { margin-bottom: var(--space-xs); font-size: 1.1rem; }
 .service-card p { color: var(--color-gray); margin-bottom: 0; line-height: 1.7; font-size: 0.95rem; }
 
+/* History Timeline */
+.history-timeline { max-width: 900px; margin: 0 auto; position: relative; padding: var(--space-lg) 0; }
+.history-timeline::before { content: ''; position: absolute; left: 30px; top: 0; bottom: 0; width: 2px; background: linear-gradient(to bottom, var(--color-primary), var(--color-accent)); }
+.timeline-item { position: relative; padding-left: 80px; margin-bottom: var(--space-xl); }
+.timeline-item:last-child { margin-bottom: 0; }
+.timeline-year { position: absolute; left: 0; top: 0; width: 60px; height: 60px; background: var(--color-primary); color: var(--color-white); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 0.85rem; text-align: center; line-height: 1.2; box-shadow: var(--shadow-md); z-index: 2; }
+.timeline-content { background: var(--color-white); padding: var(--space-lg); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); border: 1px solid var(--color-light); transition: var(--transition-base); }
+.timeline-item:hover .timeline-content { box-shadow: var(--shadow-md); transform: translateX(8px); border-color: var(--color-accent); }
+.timeline-item:hover .timeline-year { background: var(--color-accent); color: var(--color-black); transform: scale(1.1); }
+.timeline-content h3 { color: var(--color-primary); font-family: var(--font-heading); font-size: 1.5rem; margin-bottom: var(--space-sm); font-weight: 500; }
+.timeline-content p { color: var(--color-gray-dark); line-height: 1.8; margin-bottom: var(--space-sm); }
+.timeline-content p:last-child { margin-bottom: 0; }
+
 /* Mission */
 .mission-wrapper { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-xl); align-items: center; }
 .mission-content h2 { margin-bottom: var(--space-md); }
@@ -342,6 +355,11 @@ p { margin-bottom: var(--space-sm); color: var(--color-gray-dark); }
   .services-grid, .portal-grid { grid-template-columns: 1fr; }
   .lang-dropdown { width: 100%; }
   .lang-menu { position: static; margin-top: 8px; }
+  .history-timeline::before { left: 20px; }
+  .timeline-item { padding-left: 60px; }
+  .timeline-year { width: 40px; height: 40px; font-size: 0.75rem; }
+  .timeline-content { padding: var(--space-md); }
+  .timeline-content h3 { font-size: 1.25rem; }
 }
 @media (max-width: 480px) {
   .hero-buttons { flex-direction: column; }

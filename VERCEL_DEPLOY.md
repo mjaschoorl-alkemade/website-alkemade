@@ -74,3 +74,5 @@ vercel --prod
 - Environment variables moeten correct zijn ingesteld
 - Dependencies worden automatisch geïnstalleerd tijdens deployment
 
+
+

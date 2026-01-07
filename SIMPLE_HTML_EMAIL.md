@@ -28,3 +28,5 @@ Als je een eigen email server hebt, kan je de HTML email direct versturen via SM
 ## Huidige Status
 De code is klaar, je hoeft alleen een API key toe te voegen van een van bovenstaande services.
 
+
+

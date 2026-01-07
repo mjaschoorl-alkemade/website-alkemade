@@ -69,3 +69,5 @@ De frontend code in `contact.html` gebruikt automatisch:
 3. Klik op `api/contact`
 4. Bekijk de logs voor errors
 
+
+

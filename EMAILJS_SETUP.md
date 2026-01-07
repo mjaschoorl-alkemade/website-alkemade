@@ -79,3 +79,5 @@ Open `contact.html` en vervang in de JavaScript code:
    - Een email naar alkemade@nl-alkemade.com
    - Een bevestigingsmail naar het ingevulde emailadres
 
+
+
