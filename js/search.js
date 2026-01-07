@@ -17,7 +17,7 @@ const searchData = {
       { title: 'Home', url: 'index.html', keywords: ['home', 'welkom', 'alkemade', 'bloemen'], content: 'Alkemade International BV is gespecialiseerd in verwerking, marketing en logistiek van verse snijbloemen van over de hele wereld.' },
       { title: 'Over ons', url: 'over-ons.html', keywords: ['over', 'geschiedenis', 'bedrijf', 'team', 'ervaring'], content: 'Leer meer over Alkemade International BV, onze geschiedenis, missie en het team.' },
       { title: 'Diensten', url: 'over-ons.html#diensten', keywords: ['diensten', 'uitpakken', 'verwerking', 'veiling', 'transport'], content: 'Uitpakken, veilingvoorbereiding, kwaliteitsfeedback, financiële rapportage, transport en directe verkoopondersteuning.' },
-      { title: 'Galerij', url: 'galerij.html', keywords: ['galerij', 'foto', 'afbeeldingen', 'vestiging', 'team'], content: 'Bekijk foto\'s van onze vestiging, team, producten en tevreden klanten.' },
+      { title: 'Galerij', url: 'galerij.html', keywords: ['galerij', 'foto', 'afbeeldingen', 'vestiging', 'team'], content: 'Bekijk foto\'s van onze vestiging, team, services en tevreden klanten.' },
       { title: 'Partners', url: 'partners.html', keywords: ['partners', 'samenwerking', 'hogewoning', 'floraholland'], content: 'Samenwerking met kwekers wereldwijd.' },
       { title: 'Nieuws', url: 'nieuws.html', keywords: ['nieuws', 'updates', 'artikelen'], content: 'Laatste nieuws en updates van Alkemade Flowers International.' },
       { title: 'Contact', url: 'contact.html', keywords: ['contact', 'adres', 'telefoon', 'email', 'locatie'], content: 'Neem contact op met Alkemade Flowers. Gevestigd bij FloraHolland Aalsmeer.' },
