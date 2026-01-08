@@ -77,8 +77,8 @@
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" style="margin-bottom:1rem"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
             <h3 style="margin-bottom:0.5rem">Bedankt voor uw bericht!</h3>
             <p style="color:var(--color-gray);margin-bottom:0.5rem">Wij nemen zo snel mogelijk contact met u op.</p>
-            <p style="color:var(--color-gray);position:relative">Mocht het haast hebben, kunt u ons bereiken <a href="tel:+31297567148" id="phoneLink" class="phone-link-tooltip" style="color:var(--color-primary);text-decoration:none;position:relative;cursor:pointer">op dit nummer</a>
-            <div id="phoneTooltip" class="phone-tooltip" style="display:none;position:absolute;background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:1000;min-width:200px;white-space:nowrap;">
+            <p style="color:var(--color-gray);position:relative">Mocht het haast hebben, kunt u ons bereiken <span style="position:relative;display:inline-block;"><a href="tel:+31297567148" id="phoneLink" class="phone-link-tooltip" style="color:var(--color-primary);text-decoration:none;cursor:pointer">op dit nummer</a>
+            <div id="phoneTooltip" class="phone-tooltip" style="display:none;position:absolute;background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:1000;min-width:200px;white-space:nowrap;bottom:100%;margin-bottom:6px;">
               <div style="display:flex;align-items:center;gap:10px;justify-content:space-between;">
                 <span style="color:#333;font-size:14px;font-weight:500">+31-297-567148</span>
                 <button id="copyPhoneBtn" style="background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;border-radius:4px;transition:background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='none'">
@@ -90,7 +90,7 @@
               </div>
               <div id="copySuccess" style="display:none;margin-top:8px;color:#28a745;font-size:12px;text-align:center;">✓ Gekopieerd!</div>
             </div>
-            </p>
+            </span></p>
           </div>
         </div>
       </div>
@@ -271,20 +271,16 @@
       const phoneNumber = '+31-297-567148';
 
       if (phoneLink && phoneTooltip) {
-        // Position tooltip relative to link
+        // Position tooltip directly above the link
         function positionTooltip() {
           const linkRect = phoneLink.getBoundingClientRect();
-          const parentRect = phoneLink.parentElement.getBoundingClientRect();
-          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-          const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+          const tooltipRect = phoneTooltip.getBoundingClientRect();
           
-          // Calculate position relative to parent paragraph
-          const linkLeftRelative = linkRect.left - parentRect.left;
-          const linkCenter = linkLeftRelative + (linkRect.width / 2);
-          
-          phoneTooltip.style.top = (linkRect.bottom - parentRect.top + 8) + 'px';
-          phoneTooltip.style.left = linkCenter + 'px';
+          // Position tooltip centered above the link
+          phoneTooltip.style.left = '50%';
           phoneTooltip.style.transform = 'translateX(-50%)';
+          phoneTooltip.style.bottom = '100%';
+          phoneTooltip.style.marginBottom = '6px';
         }
 
         // Show tooltip on hover
