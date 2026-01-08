@@ -77,7 +77,20 @@
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" style="margin-bottom:1rem"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
             <h3 style="margin-bottom:0.5rem">Bedankt voor uw bericht!</h3>
             <p style="color:var(--color-gray);margin-bottom:0.5rem">Wij nemen zo snel mogelijk contact met u op.</p>
-            <p style="color:var(--color-gray)">Mocht het haast hebben, kunt u ons bereiken <a href="tel:+31297567148" style="color:var(--color-primary);text-decoration:none">op dit nummer</a></p>
+            <p style="color:var(--color-gray);position:relative">Mocht het haast hebben, kunt u ons bereiken <a href="tel:+31297567148" id="phoneLink" class="phone-link-tooltip" style="color:var(--color-primary);text-decoration:none;position:relative;cursor:pointer">op dit nummer</a>
+            <div id="phoneTooltip" class="phone-tooltip" style="display:none;position:absolute;background:#fff;border:1px solid #ddd;border-radius:8px;padding:12px;box-shadow:0 4px 12px rgba(0,0,0,0.15);z-index:1000;min-width:200px;white-space:nowrap;">
+              <div style="display:flex;align-items:center;gap:10px;justify-content:space-between;">
+                <span style="color:#333;font-size:14px;font-weight:500">+31-297-567148</span>
+                <button id="copyPhoneBtn" style="background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;border-radius:4px;transition:background 0.2s;" onmouseover="this.style.background='#f0f0f0'" onmouseout="this.style.background='none'">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:#666;">
+                    <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                    <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                  </svg>
+                </button>
+              </div>
+              <div id="copySuccess" style="display:none;margin-top:8px;color:#28a745;font-size:12px;text-align:center;">✓ Gekopieerd!</div>
+            </div>
+            </p>
           </div>
         </div>
       </div>
@@ -247,6 +260,104 @@
           submitBtn.textContent = originalText;
         });
       });
+    });
+
+    // Phone number tooltip and copy functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const phoneLink = document.getElementById('phoneLink');
+      const phoneTooltip = document.getElementById('phoneTooltip');
+      const copyPhoneBtn = document.getElementById('copyPhoneBtn');
+      const copySuccess = document.getElementById('copySuccess');
+      const phoneNumber = '+31-297-567148';
+
+      if (phoneLink && phoneTooltip) {
+        // Position tooltip relative to link
+        function positionTooltip() {
+          const linkRect = phoneLink.getBoundingClientRect();
+          const parentRect = phoneLink.parentElement.getBoundingClientRect();
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const scrollLeft = window.pageXOffset || document.documentElement.scrollLeft;
+          
+          // Calculate position relative to parent paragraph
+          const linkLeftRelative = linkRect.left - parentRect.left;
+          const linkCenter = linkLeftRelative + (linkRect.width / 2);
+          
+          phoneTooltip.style.top = (linkRect.bottom - parentRect.top + 8) + 'px';
+          phoneTooltip.style.left = linkCenter + 'px';
+          phoneTooltip.style.transform = 'translateX(-50%)';
+        }
+
+        // Show tooltip on hover
+        phoneLink.addEventListener('mouseenter', function() {
+          phoneTooltip.style.display = 'block';
+          positionTooltip();
+        });
+
+        phoneLink.addEventListener('mouseleave', function(e) {
+          // Don't hide if hovering over tooltip
+          if (!phoneTooltip.contains(e.relatedTarget)) {
+            phoneTooltip.style.display = 'none';
+            copySuccess.style.display = 'none';
+          }
+        });
+
+        // Keep tooltip visible when hovering over it
+        phoneTooltip.addEventListener('mouseenter', function() {
+          phoneTooltip.style.display = 'block';
+        });
+
+        phoneTooltip.addEventListener('mouseleave', function() {
+          phoneTooltip.style.display = 'none';
+          copySuccess.style.display = 'none';
+        });
+
+        // Copy phone number to clipboard
+        if (copyPhoneBtn) {
+          copyPhoneBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            navigator.clipboard.writeText(phoneNumber).then(function() {
+              copySuccess.style.display = 'block';
+              setTimeout(function() {
+                copySuccess.style.display = 'none';
+              }, 2000);
+            }).catch(function(err) {
+              console.error('Kon nummer niet kopiëren:', err);
+              // Fallback voor oudere browsers
+              const textArea = document.createElement('textarea');
+              textArea.value = phoneNumber;
+              textArea.style.position = 'fixed';
+              textArea.style.opacity = '0';
+              document.body.appendChild(textArea);
+              textArea.select();
+              try {
+                document.execCommand('copy');
+                copySuccess.style.display = 'block';
+                setTimeout(function() {
+                  copySuccess.style.display = 'none';
+                }, 2000);
+              } catch (err) {
+                console.error('Fallback kopieerfunctie faalde:', err);
+              }
+              document.body.removeChild(textArea);
+            });
+          });
+        }
+
+        // Reposition tooltip on scroll/resize
+        window.addEventListener('scroll', function() {
+          if (phoneTooltip.style.display === 'block') {
+            positionTooltip();
+          }
+        });
+
+        window.addEventListener('resize', function() {
+          if (phoneTooltip.style.display === 'block') {
+            positionTooltip();
+          }
+        });
+      }
     });
   </script>
 </body>
