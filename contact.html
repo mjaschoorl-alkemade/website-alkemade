@@ -76,7 +76,6 @@
           <div id="formSuccess" style="display:none;padding:2rem;background:var(--color-cream);border-radius:var(--radius-md);text-align:center;">
             <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" stroke-width="2" style="margin-bottom:1rem"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
             <h3 style="margin-bottom:0.5rem">Bedankt voor uw bericht!</h3>
-            <p style="color:var(--color-gray);margin-bottom:0.5rem">U ontvangt een bevestigingsmail op het ingevulde e-mailadres.</p>
             <p style="color:var(--color-gray)">Wij nemen zo snel mogelijk contact met u op.</p>
           </div>
         </div>
@@ -210,79 +209,6 @@
         const subject = form.querySelector('#subject').value;
         const message = form.querySelector('#message').value;
         
-        // Helper functie voor HTML escaping
-        function escapeHtml(text) {
-          if (!text) return '';
-          const map = {
-            '&': '&amp;',
-            '<': '&lt;',
-            '>': '&gt;',
-            '"': '&quot;',
-            "'": '&#039;'
-          };
-          return String(text).replace(/[&<>"']/g, m => map[m]);
-        }
-        
-        // HTML template voor bevestigingsmail - email-safe versie
-        const confirmationHTML = `<!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-</head>
-<body style="margin:0;padding:0;font-family:Arial,sans-serif;background-color:#f5f5f5;">
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#f5f5f5;padding:20px;">
-<tr>
-<td align="center">
-<table width="600" cellpadding="0" cellspacing="0" border="0" style="background-color:#ffffff;max-width:600px;width:100%;">
-<tr>
-<td style="background-color:#184f8c;padding:30px 20px;text-align:center;">
-<h1 style="margin:0;color:#ffffff;font-size:28px;font-weight:300;letter-spacing:1px;font-family:Arial,sans-serif;">Alkemade Flowers</h1>
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:15px;">
-<tr><td align="center"><table width="60" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:3px;background-color:#e9c437;"></td></tr></table></td></tr>
-</table>
-</td>
-</tr>
-<tr>
-<td style="padding:40px 30px;">
-<h2 style="margin:0 0 20px 0;color:#0a0a0a;font-size:24px;font-weight:400;font-family:Arial,sans-serif;">Bedankt voor uw bericht</h2>
-<p style="margin:0 0 15px 0;color:#555555;font-size:16px;line-height:1.6;font-family:Arial,sans-serif;">Beste ${escapeHtml(name)},</p>
-<p style="margin:0 0 25px 0;color:#555555;font-size:16px;line-height:1.6;font-family:Arial,sans-serif;">Bedankt voor uw bericht via de Alkemade Flowers website. Wij hebben uw bericht ontvangen en nemen zo snel mogelijk contact met u op.</p>
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:#fafafa;border-left:4px solid #e9c437;margin:30px 0;">
-<tr>
-<td style="padding:25px;">
-<h3 style="margin:0 0 20px 0;color:#0a0a0a;font-size:14px;font-weight:500;text-transform:uppercase;letter-spacing:0.5px;font-family:Arial,sans-serif;">Uw ingevulde gegevens</h3>
-<table width="100%" cellpadding="0" cellspacing="0" border="0">
-<tr><td style="padding:10px 0;border-bottom:1px solid #e5e5e5;"><strong style="color:#0a0a0a;font-size:14px;font-family:Arial,sans-serif;">Naam:</strong> <span style="color:#555555;font-size:14px;margin-left:10px;font-family:Arial,sans-serif;">${escapeHtml(name)}</span></td></tr>
-${company ? `<tr><td style="padding:10px 0;border-bottom:1px solid #e5e5e5;"><strong style="color:#0a0a0a;font-size:14px;font-family:Arial,sans-serif;">Bedrijf:</strong> <span style="color:#555555;font-size:14px;margin-left:10px;font-family:Arial,sans-serif;">${escapeHtml(company)}</span></td></tr>` : ''}
-${phone ? `<tr><td style="padding:10px 0;border-bottom:1px solid #e5e5e5;"><strong style="color:#0a0a0a;font-size:14px;font-family:Arial,sans-serif;">Telefoon:</strong> <span style="color:#555555;font-size:14px;margin-left:10px;font-family:Arial,sans-serif;">${escapeHtml(phone)}</span></td></tr>` : ''}
-<tr><td style="padding:10px 0;border-bottom:1px solid #e5e5e5;"><strong style="color:#0a0a0a;font-size:14px;font-family:Arial,sans-serif;">E-mail:</strong> <span style="color:#555555;font-size:14px;margin-left:10px;font-family:Arial,sans-serif;">${escapeHtml(email)}</span></td></tr>
-<tr><td style="padding:10px 0;border-bottom:1px solid #e5e5e5;"><strong style="color:#0a0a0a;font-size:14px;font-family:Arial,sans-serif;">Onderwerp:</strong> <span style="color:#555555;font-size:14px;margin-left:10px;font-family:Arial,sans-serif;">${escapeHtml(subject)}</span></td></tr>
-<tr><td style="padding:15px 0 0 0;"><strong style="color:#0a0a0a;font-size:14px;font-family:Arial,sans-serif;display:block;margin-bottom:8px;">Uw bericht:</strong><p style="margin:0;color:#555555;font-size:14px;line-height:1.6;white-space:pre-wrap;font-family:Arial,sans-serif;">${escapeHtml(message)}</p></td></tr>
-</table>
-</td>
-</tr>
-</table>
-<p style="margin:25px 0 0 0;color:#555555;font-size:16px;line-height:1.6;font-family:Arial,sans-serif;">Wij nemen zo snel mogelijk contact met u op.</p>
-</td>
-</tr>
-<tr>
-<td style="background-color:#0a0a0a;padding:30px 20px;text-align:center;">
-<p style="margin:0 0 10px 0;color:#ffffff;font-size:16px;font-weight:500;font-family:Arial,sans-serif;">Alkemade International B.V.</p>
-<p style="margin:0 0 8px 0;color:#e9c437;font-size:14px;font-family:Arial,sans-serif;">alkemade@nl-alkemade.com</p>
-<p style="margin:0;color:#b0b0b0;font-size:14px;font-family:Arial,sans-serif;">+31-297-567148</p>
-<table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:20px;">
-<tr><td align="center"><table width="40" cellpadding="0" cellspacing="0" border="0"><tr><td style="height:2px;background-color:#e9c437;"></td></tr></table></td></tr>
-</table>
-</td>
-</tr>
-</table>
-</td>
-</tr>
-</table>
-</body>
-</html>`;
-        
         // Email naar Caesar volgens FormSubmit documentatie
         const businessFormData = new FormData();
         businessFormData.append('_subject', `Nieuw bericht via Alkemade website: ${subject}`);
@@ -295,62 +221,7 @@ ${phone ? `<tr><td style="padding:10px 0;border-bottom:1px solid #e5e5e5;"><stro
         businessFormData.append('subject', subject.trim());
         businessFormData.append('message', message.trim());
         
-        // Helper functie voor text bevestigingsmail
-        function sendTextConfirmation() {
-          const confirmationText = `Beste ${name},
-
-Bedankt voor uw bericht via de Alkemade Flowers website.
-
-Hieronder vindt u een overzicht van wat u heeft ingevuld:
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-UW INGEVULDE GEGEVENS
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Naam: ${name}
-${company ? `Bedrijf: ${company}\n` : ''}${phone ? `Telefoon: ${phone}\n` : ''}E-mail: ${email}
-Onderwerp: ${subject}
-
-Uw bericht:
-${message}
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-
-Wij hebben uw bericht ontvangen en nemen zo snel mogelijk contact met u op.
-
-Met vriendelijke groet,
-Alkemade International B.V.
-alkemade@nl-alkemade.com
-+31-297-567148`;
-
-          const confirmationFormData = new FormData();
-          confirmationFormData.append('_subject', 'Bevestiging: Uw bericht is ontvangen - Alkemade Flowers');
-          confirmationFormData.append('_captcha', 'false');
-          confirmationFormData.append('message', confirmationText);
-          
-          return new Promise((resolve) => {
-        setTimeout(() => {
-              fetch('https://formsubmit.co/ajax/' + encodeURIComponent(email), {
-                method: 'POST',
-                body: confirmationFormData,
-                headers: {
-                  'Accept': 'application/json'
-                }
-              })
-              .then(response => response.json())
-              .then(data => {
-                console.log('Text bevestigingsmail verzonden');
-                resolve(data);
-              })
-              .catch(err => {
-                console.log('Bevestigingsmail kon niet worden verzonden:', err);
-                resolve({ success: true });
-              });
-            }, 500);
-          });
-        }
-        
-        // Verstuur eerst email naar Caesar
+        // Verstuur email naar Caesar
         fetch('https://formsubmit.co/ajax/Caesar.schoorl@gmail.com', {
           method: 'POST',
           body: businessFormData,
@@ -360,59 +231,12 @@ alkemade@nl-alkemade.com
         })
         .then(response => response.json())
         .then(result => {
-          // Check of hoofdmail is verzonden
           if (result.success) {
-            // Verstuur bevestigingsmail met mooie HTML
-            // Gebruik een simpele methode: stuur HTML email via een service die het wel accepteert
-            // Voor nu: gebruik text email maar met betere formatting
-            // HTML email wordt verzonden zodra een betere service is geconfigureerd
-            
-            // Verstuur HTML email zonder API key
-            // Probeer HTML email te verzenden via FormSubmit met HTML content
-            // FormSubmit ondersteunt HTML emails niet goed via AJAX, maar we proberen het toch
-            
-            const htmlEmailFormData = new FormData();
-            htmlEmailFormData.append('_to', email);
-            htmlEmailFormData.append('_subject', 'Bevestiging: Uw bericht is ontvangen - Alkemade Flowers');
-            htmlEmailFormData.append('_template', 'html');
-            htmlEmailFormData.append('_format', 'html');
-            htmlEmailFormData.append('message', confirmationHTML);
-            htmlEmailFormData.append('_captcha', 'false');
-            
-            // Verstuur HTML email via FormSubmit
-            return fetch('https://formsubmit.co/ajax/' + encodeURIComponent(email), {
-              method: 'POST',
-              body: htmlEmailFormData,
-              headers: {
-                'Accept': 'application/json'
-              }
-            })
-            .then(response => response.json())
-            .then(data => {
-              if (data.success) {
-                console.log('HTML bevestigingsmail verzonden (mogelijk als code)');
-                return { success: true };
-              }
-              // Als HTML email niet werkt, gebruik text fallback
-              console.log('HTML email niet ondersteund, gebruik text email');
-              return sendTextConfirmation();
-            })
-            .catch(err => {
-              console.log('HTML email kon niet worden verzonden, gebruik text email:', err);
-              // Fallback naar text email
-              return sendTextConfirmation();
-            });
+            // Success - toon success bericht
+            form.style.display = 'none';
+            successMsg.style.display = 'block';
           } else {
             throw new Error(result.message || 'Kon email niet verzenden');
-          }
-        })
-        .then(confirmationResult => {
-          // Success - beide emails zijn verzonden (of alleen hoofdmail als bevestiging faalt)
-          form.style.display = 'none';
-          successMsg.style.display = 'block';
-          const emailText = successMsg.querySelector('p:first-of-type');
-          if (emailText && email) {
-            emailText.innerHTML = `U ontvangt een bevestigingsmail op <strong>${email}</strong> met een overzicht van wat u heeft ingevuld.`;
           }
         })
         .catch(error => {
