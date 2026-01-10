@@ -60,16 +60,16 @@
       <div class="section-header animate-on-scroll">
         <span class="section-label" data-i18n="news.label">Updates</span>
         <h2 class="section-title" data-i18n="news.title">Laatste nieuws</h2>
-        <p class="section-subtitle">Blijf op de hoogte van de laatste ontwikkelingen bij Alkemade Flowers International.</p>
+        <p class="section-subtitle" data-i18n="news.subtitle">Blijf op de hoogte van de laatste ontwikkelingen bij Alkemade Flowers International.</p>
       </div>
       <div class="news-grid">
         <article class="news-card animate-on-scroll" style="cursor:pointer;" onclick="openNewsModal()">
           <div class="news-image"><img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=600&q=80" alt="Nieuws"></div>
           <div class="news-content">
-            <span class="news-date">Februari 2026</span>
-            <h3 class="news-title">Nieuwe service: Mono bossen en bandboeketten</h3>
-            <p class="news-excerpt">Wij starten vanaf Februari 2026 met het maken van mono bossen en bandboeketten voor kwekers en/of derden.</p>
-            <a href="#" class="news-link" onclick="event.preventDefault(); openNewsModal(); return false;">Lees meer →</a>
+            <span class="news-date" data-i18n="news.article.date">Februari 2026</span>
+            <h3 class="news-title" data-i18n="news.article.title">Nieuwe service: Mono bossen en bandboeketten</h3>
+            <p class="news-excerpt" data-i18n="news.article.excerpt">Wij starten vanaf Februari 2026 met het maken van mono bossen en bandboeketten voor kwekers en/of derden.</p>
+            <a href="#" class="news-link" onclick="event.preventDefault(); openNewsModal(); return false;" data-i18n="news.readmore">Lees meer →</a>
           </div>
         </article>
       </div>
@@ -83,12 +83,12 @@
       <div class="news-modal-image" style="width:100%;height:300px;overflow:hidden;border-radius:var(--radius-md);margin-bottom:2rem;">
         <img src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=800&q=80" alt="Nieuws" style="width:100%;height:100%;object-fit:cover;">
       </div>
-      <span class="news-date" style="font-size:0.75rem;color:var(--color-accent);font-weight:600;letter-spacing:0.1em;margin-bottom:var(--space-xs);display:inline-block;padding:6px 12px;background:var(--color-black);border-radius:var(--radius-sm);">Februari 2026</span>
-      <h2 style="font-size:2rem;margin-bottom:1.5rem;font-weight:400;color:var(--color-black);">Nieuwe service: Mono bossen en bandboeketten</h2>
+      <span class="news-date" style="font-size:0.75rem;color:var(--color-accent);font-weight:600;letter-spacing:0.1em;margin-bottom:var(--space-xs);display:inline-block;padding:6px 12px;background:var(--color-black);border-radius:var(--radius-sm);" data-i18n="news.article.date">Februari 2026</span>
+      <h2 style="font-size:2rem;margin-bottom:1.5rem;font-weight:400;color:var(--color-black);" data-i18n="news.modal.title">Nieuwe service: Mono bossen en bandboeketten</h2>
       <div class="news-modal-text" style="color:var(--color-gray);font-size:1rem;line-height:1.8;margin-bottom:2rem;">
-        <p>Wij starten vanaf Februari 2026 met het maken van mono bossen en bandboeketten voor kwekers en/of derden.</p>
+        <p data-i18n="news.modal.text">Wij starten vanaf Februari 2026 met het maken van mono bossen en bandboeketten voor kwekers en/of derden.</p>
       </div>
-      <a href="contact.html" class="btn btn-primary" style="display:inline-block;margin-top:1rem;">Neem contact op</a>
+      <a href="contact.html" class="btn btn-primary" style="display:inline-block;margin-top:1rem;" data-i18n="cta.btn">Neem contact op</a>
     </div>
   </div>
 
