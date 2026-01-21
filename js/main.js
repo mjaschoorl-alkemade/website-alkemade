@@ -56,7 +56,7 @@ const translations = {
     'clients.stats.title': 'Onze statistieken', 'clients.stats.text': '✓ 50+ Partners wereldwijd<br>✓ 27+ Jaren ervaring<br>✓ 100% Klanttevredenheid<br>✓ Duurzame partnerschappen',
     'clients.service.title': 'Klantenservice', 'clients.service.text': 'Wij bieden persoonlijke service en ondersteuning aan al onze klanten. Duurzame relaties staan bij ons centraal.',
     'clients.cta.title': 'Wilt u ook partner worden?', 'clients.cta.text': 'Neem contact met ons op voor een duurzaam partnerschap',
-    'contact.success.title': 'Bedankt voor uw bericht!', 'contact.success.text': 'Wij nemen zo snel mogelijk contact met u op.', 'contact.success.urgent': 'Mocht het haast hebben, kunt u ons bereiken', 'contact.success.phone': 'op dit nummer',
+    'contact.success.title': 'Bedankt voor uw bericht!', 'contact.success.text': 'Wij nemen zo snel mogelijk contact met u op.', 'contact.success.urgent': 'Mocht het haast hebben, kunt u ons bereiken', 'contact.success.phone': '+31-297-567148',
     'location.cta.title': 'Wilt u langskomen?', 'location.cta.text': 'Neem contact met ons op om een afspraak te maken',
     'gallery.location.label': 'Onze locatie', 'gallery.location.title': 'Vestiging', 'gallery.location.subtitle': 'Gevestigd bij FloraHolland Aalsmeer, de grootste bloemenveiling ter wereld',
     'gallery.images.label': 'Beelden', 'gallery.images.title': 'Ontdek ons bedrijf', 'gallery.images.subtitle': 'Een kijkje achter de schermen bij Alkemade Flowers International'
@@ -116,7 +116,7 @@ const translations = {
     'clients.stats.title': 'Our statistics', 'clients.stats.text': '✓ 50+ Partners worldwide<br>✓ 27+ Years of experience<br>✓ 100% Customer satisfaction<br>✓ Sustainable partnerships',
     'clients.service.title': 'Customer service', 'clients.service.text': 'We offer personal service and support to all our clients. Sustainable relationships are central to us.',
     'clients.cta.title': 'Would you also like to become a partner?', 'clients.cta.text': 'Contact us for a sustainable partnership',
-    'contact.success.title': 'Thank you for your message!', 'contact.success.text': 'We will contact you as soon as possible.', 'contact.success.urgent': 'If it is urgent, you can reach us', 'contact.success.phone': 'at this number',
+    'contact.success.title': 'Thank you for your message!', 'contact.success.text': 'We will contact you as soon as possible.', 'contact.success.urgent': 'If it is urgent, you can reach us', 'contact.success.phone': '+31-297-567148',
     'location.cta.title': 'Would you like to visit?', 'location.cta.text': 'Contact us to make an appointment',
     'gallery.location.label': 'Our location', 'gallery.location.title': 'Location', 'gallery.location.subtitle': 'Located at FloraHolland Aalsmeer, the world\'s largest flower auction',
     'gallery.images.label': 'Images', 'gallery.images.title': 'Discover our company', 'gallery.images.subtitle': 'A behind-the-scenes look at Alkemade Flowers International'
@@ -176,7 +176,7 @@ const translations = {
     'clients.stats.title': 'Nuestras estadísticas', 'clients.stats.text': '✓ 50+ Socios en todo el mundo<br>✓ 27+ Años de experiencia<br>✓ 100% Satisfacción del cliente<br>✓ Asociaciones sostenibles',
     'clients.service.title': 'Servicio al cliente', 'clients.service.text': 'Ofrecemos servicio personal y soporte a todos nuestros clientes. Las relaciones sostenibles son centrales para nosotros.',
     'clients.cta.title': '¿También le gustaría convertirse en socio?', 'clients.cta.text': 'Contáctenos para una asociación sostenible',
-    'contact.success.title': '¡Gracias por su mensaje!', 'contact.success.text': 'Nos pondremos en contacto con usted lo antes posible.', 'contact.success.urgent': 'Si es urgente, puede contactarnos', 'contact.success.phone': 'en este número',
+    'contact.success.title': '¡Gracias por su mensaje!', 'contact.success.text': 'Nos pondremos en contacto con usted lo antes posible.', 'contact.success.urgent': 'Si es urgente, puede contactarnos', 'contact.success.phone': '+31-297-567148',
     'location.cta.title': '¿Le gustaría visitarnos?', 'location.cta.text': 'Contáctenos para hacer una cita',
     'gallery.location.label': 'Nuestra ubicación', 'gallery.location.title': 'Ubicación', 'gallery.location.subtitle': 'Ubicado en FloraHolland Aalsmeer, la subasta de flores más grande del mundo',
     'gallery.images.label': 'Imágenes', 'gallery.images.title': 'Descubra nuestra empresa', 'gallery.images.subtitle': 'Una mirada detrás de escena en Alkemade Flowers International'
