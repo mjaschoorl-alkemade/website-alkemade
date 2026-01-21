@@ -33,10 +33,10 @@ module.exports = async (req, res) => {
       }
     });
 
-    // Email naar Caesar
+    // Email naar Alkemade
     await transporter.sendMail({
       from: process.env.EMAIL_USER,
-      to: 'Caesar.schoorl@gmail.com',
+      to: 'alkemade@nl-alkemade.com',
       replyTo: email,
       subject: `Nieuw bericht: ${subject}`,
       text: `Naam: ${name}\nEmail: ${email}\nBedrijf: ${company || 'Niet opgegeven'}\nTelefoon: ${phone || 'Niet opgegeven'}\n\nBericht:\n${message}`

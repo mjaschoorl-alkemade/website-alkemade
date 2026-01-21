@@ -61,10 +61,10 @@ app.post('/api/contact', async (req, res) => {
       });
     }
 
-    // Email naar Caesar
-    const mailToCaesar = {
+    // Email naar Alkemade
+    const mailToAlkemade = {
       from: process.env.EMAIL_USER || 'alkemade@nl-alkemade.com',
-      to: 'Caesar.schoorl@gmail.com',
+      to: 'alkemade@nl-alkemade.com',
       replyTo: email,
       subject: `Nieuw bericht via Alkemade website: ${subject}`,
       text: `Nieuw bericht via Alkemade website
@@ -139,8 +139,8 @@ alkemade@nl-alkemade.com
       `
     };
 
-    // Verstuur email naar Caesar (verplicht)
-    const result1 = await transporter.sendMail(mailToCaesar);
+    // Verstuur email naar Alkemade (verplicht)
+    const result1 = await transporter.sendMail(mailToAlkemade);
     
     // Verstuur bevestigingsmail naar gebruiker (optioneel - faalt niet als dit mislukt)
     let confirmationSent = false;
